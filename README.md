@@ -1,1 +1,1 @@
-#[ModKit Wiki](../../wiki)
+Go fry some eggs
