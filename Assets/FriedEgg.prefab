@@ -153,7 +153,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1380853578762280
 GameObject:
   m_ObjectHideFlags: 1
@@ -1419,8 +1419,10 @@ MonoBehaviour:
   module: {fileID: 0}
   knob: {fileID: 114815945727014660}
   egg: {fileID: 114903712982067674}
+  eggModel: {fileID: 1865034651014498}
   crackedEgg: {fileID: 1323123715947034}
   timerText: {fileID: 102950704358546614}
+  burntYolkMat: {fileID: 2100000, guid: c4fb66e45f873ed4c81221b2e6e8ad62, type: 2}
   secondsLeft: 120
   baseColorList:
   - {r: 0.9764706, g: 0.95686275, b: 0.7764706, a: 1}

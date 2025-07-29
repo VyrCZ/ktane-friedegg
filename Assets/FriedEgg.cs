@@ -9,8 +9,10 @@ public class FriedEgg : MonoBehaviour {
     public KMBombModule module;
     public KMSelectable knob;
     public KMSelectable egg;
+    public GameObject eggModel;
     public GameObject crackedEgg;
     public TextMesh timerText;
+    public Material burntYolkMat;
 
     public int secondsLeft = 120;
 
@@ -64,7 +66,7 @@ public class FriedEgg : MonoBehaviour {
         }
 
         // Set the egg's visual appearance based on colors and pattern
-        var eggRenderer = egg.GetComponent<Renderer>();
+        var eggRenderer = eggModel.GetComponent<Renderer>();
         if (eggRenderer != null)
         {
             var mat = eggRenderer.material;
@@ -170,19 +172,24 @@ public class FriedEgg : MonoBehaviour {
             timerText.text = TimeToString(secondsLeft);
             if (isCooking)
             {
-                if (secondsLeft < perfectTime - 5)
+                if (secondsLeft < perfectTime - 3)
                 {
                     Log("Cooked for too long. Egg is burnt. Module auto-solving.");
                     isSolved = true;
+                    GetComponent<KMBombModule>().HandleStrike();
                     GetComponent<KMBombModule>().HandlePass();
-                    timerText.text = "burnt";
+                    timerText.text = ":(";
                     isCooking = false;
+                    Log("Setting burnt yolk material.");
+                    var mats = crackedEgg.GetComponent<Renderer>().materials;
+                    mats[1] = burntYolkMat;
+                    crackedEgg.GetComponent<Renderer>().materials = mats;
                     yield break;
                 }
             }
             yield return new WaitForSeconds(tickRate);
             // if this module is the last one, increase tickRate to 0.25
-            if (bombInfo.GetModuleNames().Count == 1)
+            if (bombInfo.GetSolvableModuleNames().Count - bombInfo.GetSolvedModuleNames().Count == 1)
             {
                 tickRate = 0.25f;
             }
@@ -227,13 +234,13 @@ public class FriedEgg : MonoBehaviour {
         if (isCooking)
         {
             // Turning knob while cooking means turning it off
-            if (secondsLeft >= perfectTime - 5 && secondsLeft <= perfectTime + 5)
+            if (secondsLeft >= perfectTime && secondsLeft <= perfectTime + 3)
             {
                 Log("Heat turned off at the correct time. Module solved!");
                 isSolved = true;
                 GetComponent<KMBombModule>().HandlePass();
                 if (timerCoroutine != null) StopCoroutine(timerCoroutine);
-                timerText.text = "egg";
+                timerText.text = ":)";
             	currentHeat = 0;
             	isCooking = false; // Stop cooking checks
             }
