@@ -208,8 +208,13 @@ public class FriedEgg : MonoBehaviour {
             egg.gameObject.SetActive(false);
             crackedEgg.SetActive(true);
             crackedEgg.transform.localRotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
+            var mats = crackedEgg.GetComponent<Renderer>().materials;
+            mats[0].SetColor("_Color", baseColorList[baseColorIndex]);
+            mats[1].SetColor("_Color", accentColorList[accentColorIndex]);
+            crackedEgg.GetComponent<Renderer>().materials = mats;
             // if the cooking is started too late, be kind and make the timer shorter
-            if (bombInfo.GetTime() < secondsLeft + 5){
+            if (bombInfo.GetTime() < secondsLeft + 5)
+            {
                 secondsLeft = CalculateTotalTimer();
             }
             timerCoroutine = StartCoroutine(StartTimer());
